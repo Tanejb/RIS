@@ -13,9 +13,5 @@ public class InstruktorController {
 
     @Autowired
     private InstruktorRepository instruktorDao;
-
-    @GetMapping
-    public Iterable<Instruktor> vrniInstruktorje(){
-        return instruktorDao.findAll();
-    }
+    
 }
