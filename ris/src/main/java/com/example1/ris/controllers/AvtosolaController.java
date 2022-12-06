@@ -28,6 +28,7 @@ public class AvtosolaController {
         return avtosolaDao.findById(avtosola_id);
     }
 
+    // Pridobi Avtošole kjer je ime podobno kot (imeAvtosole) in ime kraja avtošole je (imeKraj)
     @GetMapping("/imeAvtosole/{imeAvtosole}/{imeKraja}")
     public Iterable<Avtosola> vrniAvtosoloPoImenuInKraju(@PathVariable(name = "imeAvtosole") String imeAvtosole, @PathVariable(name = "imeKraja") String imeKraja){
         return avtosolaDao.vrniAvtosolePoImenuInKraju(imeAvtosole, imeKraja);

@@ -25,6 +25,7 @@ public class KrajController {
         return krajDao.findById(kraj_id);
     }
 
+    // Pridobi kraj, ki je v Državi (imeDržave), poštna številka je večja od (postnaSt) in ime Kraja se prične kot (imeKraja)
     @GetMapping("/imeDrzave/{imeDrzave}/{postnaSt}/{imeKraja}")
     public Iterable<Kraj> vrniKrajePoDrzaviInVelikostiPostneSt(@PathVariable(name = "imeDrzave") String imeDrzave, @PathVariable(name = "postnaSt") int postnaSt, @PathVariable(name = "imeKraja") String imeKraja){
         return krajDao.vrniKrajePoDrzaviInPostniStevilki(imeDrzave, postnaSt, imeKraja);
@@ -35,6 +36,7 @@ public class KrajController {
         return krajDao.save(kraj);
     }
 
+    // Posodobi Kraj
     @PutMapping("/{kraj_id}")
     public Kraj spremeniKraj(@PathVariable(name = "kraj_id") Long kraj_id, @RequestBody Kraj kraj){
         Kraj posodobljenKraj = krajDao.findById(kraj_id).orElseThrow(() -> new ResourceNotFoundException("Kraj ne obstaja z id: " + kraj_id));
@@ -46,6 +48,7 @@ public class KrajController {
         return  krajDao.save(posodobljenKraj);
     }
 
+    // Izbriši Kraj
     @DeleteMapping("/{kraj_id}")
     public void izbrisiKraj(@PathVariable(name = "kraj_id") Long kraj_id){
         krajDao.deleteById(kraj_id);

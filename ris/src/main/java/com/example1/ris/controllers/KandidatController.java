@@ -26,6 +26,7 @@ public class KandidatController {
         return kandidatDao.findById(kandidat_id);
     }
 
+    // Pridobi Kandidate katerih ime je podobno (imeKandidata), priimek kandidata je podoben (priimekKandidata) in ime kraja kandidata je enako (imeKraja)
     @GetMapping("/imeKandidata/{imeKandidata}/{priimekKandidata}/{imeKraja}")
     public Iterable<Kandidat> vrniKandiataPoImenuInPrimkuInKraju(@PathVariable(name = "imeKandidata") String imeKandidata, @PathVariable(name = "priimekKandidata") String priimekKandidata, @PathVariable(name = "imeKraja") String imeKraja){
         return kandidatDao.vrniKandidataPoImenuInPriimkuInKraju(imeKandidata, priimekKandidata, imeKraja);
@@ -36,7 +37,8 @@ public class KandidatController {
         return kandidatDao.save(kandidat);
     }
 
-    @PutMapping("/dodajKraj/{kandidat_id}")
+    // Dodaj Kraj Kandidatu
+    @PostMapping("/dodajKraj/{kandidat_id}")
     public Kandidat dodajKraj(@PathVariable(name = "kandidat_id") Long kandidat_id, @RequestBody Kraj kraj){
         Kandidat posodobljenKandidat = kandidatDao.findById(kandidat_id).orElseThrow(() -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
 

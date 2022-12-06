@@ -64,4 +64,23 @@ public class InstruktorController {
         return instruktorDao.save(iskanInstruktor);
     }
 
+    // Spreminjanje Instruktorja
+    @PutMapping("/spremeniInstruktorja/{instruktor_id}")
+    public Instruktor spremeniInstruktorja(@PathVariable(name = "instruktor_id")Long instruktor_id, @RequestBody Instruktor instruktor){
+        Instruktor posodobljenInstruktor = instruktorDao.findById(instruktor_id).orElseThrow(() -> new ResourceNotFoundException("Instruktor ne obstja z id: " + instruktor_id));
+
+        posodobljenInstruktor.setIme(instruktor.getIme());
+        posodobljenInstruktor.setPriimek(instruktor.getPriimek());
+        posodobljenInstruktor.setTelefonska_st(instruktor.getTelefonska_st());
+        posodobljenInstruktor.setE_naslov(instruktor.getE_naslov());
+        posodobljenInstruktor.setCena_voznje(instruktor.getCena_voznje());
+
+        return instruktorDao.save(posodobljenInstruktor);
+    }
+
+    // Izbrisi instruktorja
+    @DeleteMapping("/izbrisiInstruktorja/{instruktor_id}")
+    public void izbrisiInstruktorja(@PathVariable(name = "instruktor_id")Long instruktor_id){
+        instruktorDao.deleteById(instruktor_id);
+    }
 }
