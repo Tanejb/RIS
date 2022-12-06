@@ -34,6 +34,12 @@ public class AvtosolaController {
         return avtosolaDao.vrniAvtosolePoImenuInKraju(imeAvtosole, imeKraja);
     }
 
+    // Pridobi Avtosole, ki imajo Instruktorje
+    @GetMapping("/imaInstroktorja")
+    public Iterable<Avtosola> vrniAvtosoleZVecInstruktorji(){
+        return avtosolaDao.vrniAvtosoleZVecInstruktorji();
+    }
+
     @PostMapping
     public Avtosola dodajAvtosolo(@RequestBody Avtosola avtosola){
         return avtosolaDao.save(avtosola);
@@ -44,6 +50,7 @@ public class AvtosolaController {
     public Avtosola dodajKraj(@PathVariable(name = "avtosola_id") Long avtosola_id, @RequestBody Kraj kraj){
         Avtosola posodobljenaAvtosola = avtosolaDao.findById(avtosola_id).orElseThrow(() -> new ResourceNotFoundException("Avtosola ne obstaja z id: " + avtosola_id));
 
+        posodobljenaAvtosola.setKraj(null);
         posodobljenaAvtosola.setKraj(kraj);
 
         return avtosolaDao.save(posodobljenaAvtosola);

@@ -32,6 +32,12 @@ public class KandidatController {
         return kandidatDao.vrniKandidataPoImenuInPriimkuInKraju(imeKandidata, priimekKandidata, imeKraja);
     }
 
+    // Pridobi Kandidate katerih Kraj je enak (imeKraja)
+    @GetMapping("/kandidatiIzKraja/{imeKraja}")
+    public Iterable<Kandidat> vrniKandidataIzKraja(@PathVariable(name = "imeKraja")String imeKraja){
+        return kandidatDao.vrniKandidatePoKraju(imeKraja);
+    }
+
     @PostMapping
     public Kandidat dodajKandidata(@RequestBody Kandidat kandidat){
         return kandidatDao.save(kandidat);
@@ -42,8 +48,15 @@ public class KandidatController {
     public Kandidat dodajKraj(@PathVariable(name = "kandidat_id") Long kandidat_id, @RequestBody Kraj kraj){
         Kandidat posodobljenKandidat = kandidatDao.findById(kandidat_id).orElseThrow(() -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
 
+        posodobljenKandidat.setKraj(null);
         posodobljenKandidat.setKraj(kraj);
 
         return kandidatDao.save(posodobljenKandidat);
+    }
+
+    // Izbrisi Kandidata po Id
+    @DeleteMapping("/izbrisiKandidata/{kandidat_id}")
+    public void izbrisiKandidata(@PathVariable(name = "kandidat_id")Long kandidat_id){
+        kandidatDao.deleteById(kandidat_id);
     }
 }
