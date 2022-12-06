@@ -47,6 +47,7 @@ public class AvtosolaController {
         return avtosolaDao.save(posodobljenaAvtosola);
     }
 
+    // Spremeni Avtosola lastnosti
     @PutMapping("/{avtosola_id}")
     public Avtosola spremeniAvtosolo(@PathVariable(name = "avtosola_id") Long avtosola_id, @RequestBody Avtosola avtosola){
         Avtosola posodobljenaAvtosola = avtosolaDao.findById(avtosola_id).orElseThrow(() -> new ResourceNotFoundException("Avtosola ne obstaja z id: " + avtosola_id));
