@@ -38,7 +38,8 @@ public class AvtosolaController {
         return avtosolaDao.save(avtosola);
     }
 
-    @PutMapping("/dodajKraj/{avtosola_id}")
+    // Dodaj Kraj Avtosoli
+    @PostMapping("/dodajKraj/{avtosola_id}")
     public Avtosola dodajKraj(@PathVariable(name = "avtosola_id") Long avtosola_id, @RequestBody Kraj kraj){
         Avtosola posodobljenaAvtosola = avtosolaDao.findById(avtosola_id).orElseThrow(() -> new ResourceNotFoundException("Avtosola ne obstaja z id: " + avtosola_id));
 
