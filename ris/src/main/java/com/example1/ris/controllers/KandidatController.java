@@ -1,5 +1,6 @@
 package com.example1.ris.controllers;
 
+import com.example1.ris.EmailSenderService;
 import com.example1.ris.dao.KandidatRepository;
 import com.example1.ris.dao.TerminRepository;
 import com.example1.ris.exceprion.ResourceNotFoundException;
@@ -21,6 +22,9 @@ public class KandidatController {
 
     @Autowired
     private TerminRepository terminDao;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @GetMapping
     public Iterable<Kandidat> vrniKandidate(){
@@ -46,6 +50,10 @@ public class KandidatController {
 
     @PostMapping
     public Kandidat dodajKandidata(@RequestBody Kandidat kandidat){
+        String welcome = "Welcome, " + kandidat.getIme();
+        String body = "Thank you for registering on MojInstruktor app!";
+        String userEmail = kandidat.getE_naslov();
+        emailSenderService.sendEmail(userEmail, welcome, body);
         return kandidatDao.save(kandidat);
     }
 
