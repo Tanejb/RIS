@@ -61,6 +61,7 @@ public class KandidatController {
     }
 
     // Dodaj Termin Kandidatu
+    // Kandidata samo poiscec
     @PostMapping("/dodajTermin/{kandidat_id}")
     public Kandidat dodajTerminInstrukturju(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Termin termin){
         Kandidat iskanKandidat = kandidatDao.findById(kandidat_id).orElseThrow(()  -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
