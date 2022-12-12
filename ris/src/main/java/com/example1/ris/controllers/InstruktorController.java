@@ -55,7 +55,6 @@ public class InstruktorController {
     @PostMapping("/dodajTermin/{instruktor_id}")
     public Instruktor dodajTerminInstrukturju(@PathVariable(name = "instruktor_id")Long instruktor_id, @RequestBody Termin termin){
         Instruktor iskanInstruktor = instruktorDao.findById(instruktor_id).orElseThrow(()  -> new ResourceNotFoundException("Instruktor ne obstaja z id: " + instruktor_id));
-        iskanInstruktor.getTermini().add(termin);
 
         Termin dodanTermin = terminDao.findById(termin.getId()).orElseThrow(()  -> new ResourceNotFoundException("Termin ne obstaja z id: " + termin.getId()));
         dodanTermin.setInstruktor(iskanInstruktor);
