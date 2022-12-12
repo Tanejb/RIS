@@ -20,6 +20,8 @@ public class Instruktor {
 	private String telefonska_st;
 	private String e_naslov;
 	private double cena_voznje;
+	private String user_name;
+	private String password;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "avtosola_id")

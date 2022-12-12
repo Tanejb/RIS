@@ -1,9 +1,12 @@
 package com.example1.ris.controllers;
 
 import com.example1.ris.dao.KandidatRepository;
+import com.example1.ris.dao.TerminRepository;
 import com.example1.ris.exceprion.ResourceNotFoundException;
+import com.example1.ris.models.Instruktor;
 import com.example1.ris.models.Kandidat;
 import com.example1.ris.models.Kraj;
+import com.example1.ris.models.Termin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,9 @@ public class KandidatController {
 
     @Autowired
     private KandidatRepository kandidatDao;
+
+    @Autowired
+    private TerminRepository terminDao;
 
     @GetMapping
     public Iterable<Kandidat> vrniKandidate(){
@@ -52,6 +58,18 @@ public class KandidatController {
         posodobljenKandidat.setKraj(kraj);
 
         return kandidatDao.save(posodobljenKandidat);
+    }
+
+    // Dodaj Termin Kandidatu
+    @PostMapping("/dodajTermin/{kandidat_id}")
+    public Kandidat dodajTerminInstrukturju(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Termin termin){
+        Kandidat iskanKandidat = kandidatDao.findById(kandidat_id).orElseThrow(()  -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
+
+        Termin dodanTermin = terminDao.findById(termin.getId()).orElseThrow(()  -> new ResourceNotFoundException("Termin ne obstaja z id: " + termin.getId()));
+        dodanTermin.setKandidat(iskanKandidat);
+        terminDao.save(dodanTermin);
+
+        return kandidatDao.save(iskanKandidat);
     }
 
     // Izbrisi Kandidata po Id

@@ -20,6 +20,8 @@ public class Kandidat {
 	private String naslov;
 	private String telefonska_st;
 	private String e_naslov;
+	private String user_name;
+	private String password;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ocena_id")

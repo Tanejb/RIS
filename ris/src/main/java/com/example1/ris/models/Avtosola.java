@@ -18,6 +18,8 @@ public class Avtosola {
 	private String ime;
 	private String naslov;
 	private String telefonska_st;
+	private String user_name;
+	private String password;
 
 	@OneToMany(mappedBy = "avtosola", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	Collection<Izdelek> izdelki;
