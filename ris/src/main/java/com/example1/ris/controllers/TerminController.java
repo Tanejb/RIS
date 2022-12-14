@@ -27,6 +27,23 @@ public class TerminController {
         return terminDao.findById(termin_id);
     }
 
+    // Pridobe polne termine
+    @GetMapping("/polni")
+    public Iterable<Termin> vrniPolneTermine(){
+        return terminDao.vrniTermineKiSoPolni();
+    }
+
+    // Pridobi termine brez kandidta
+    @GetMapping("/brezKandidata")
+    public Iterable<Termin> vrniTermineBrezKandidata(){
+        return terminDao.vrniPrazneTermine();
+    }
+
+    @GetMapping("/poId/{id_instruktor}/{id_kandidat}")
+    public Iterable<Termin> vrniTerminePoIdInstruktorjaInKandidata(@PathVariable(name = "id_instruktor")Long id_instruktor, @PathVariable(name = "id_kandidat")Long id_kandidat){
+        return terminDao.vrniTerminePoIdINstruktorInKandidat(id_instruktor, id_kandidat);
+    }
+
     @PostMapping
     public Termin dodajTermin(@RequestBody Termin termin){
         return terminDao.save(termin);

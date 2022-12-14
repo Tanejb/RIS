@@ -14,4 +14,6 @@ public interface AvtosolaRepository extends CrudRepository<Avtosola, Long> {
     // Pridobi Avtosole, ki imajo Instruktorje
     @Query("select a from Avtosola a, Instruktor i where i.avtosola = a")
     Iterable<Avtosola> vrniAvtosoleZVecInstruktorji();
+
+
 }

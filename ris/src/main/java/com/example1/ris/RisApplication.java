@@ -9,17 +9,7 @@ import org.springframework.context.event.EventListener;
 @SpringBootApplication
 public class RisApplication {
 
-	@Autowired
-	private EmailSenderService emailSenderService;
-
 	public static void main(String[] args) {
 		SpringApplication.run(RisApplication.class, args);
 	}
-
-//		@EventListener(ApplicationReadyEvent.class)
-//		public void sendEmail(){
-//			String welcome = "Welcome, Miha";
-//			String body = "Thank you for registering on MojInstruktor app!";
-//			emailSenderService.sendEmail("prah.miha1@gmail.com", welcome, body);
-//		}
 }
