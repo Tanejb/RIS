@@ -53,7 +53,8 @@ public class KandidatController {
         String welcome = "Welcome, " + kandidat.getIme();
         String body = "Thank you for registering on MojInstruktor app!";
         String userEmail = kandidat.getE_naslov();
-        emailSenderService.sendEmail(userEmail, welcome, body);
+        String attachment = "/Users/mihaprah/Desktop/RIS_repo/driveSafePhoto.jpg";
+        emailSenderService.sendEmail(userEmail, welcome, body, attachment);
         return kandidatDao.save(kandidat);
     }
 
