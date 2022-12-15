@@ -11,6 +11,7 @@ import com.example1.ris.models.Termin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -80,6 +81,38 @@ public class KandidatController {
         terminDao.save(dodanTermin);
 
         return kandidatDao.save(iskanKandidat);
+    }
+
+    // Odstrani Termin Kandidatu
+    @PostMapping("/odstraniTermin/{kandidat_id}")
+    public Kandidat odstraniTermin(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Termin termin){
+        Kandidat iskanKandidat = kandidatDao.findById(kandidat_id).orElseThrow(()  -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
+
+        Termin obstojecTermin = terminDao.findById(termin.getId()).orElseThrow(() -> new ResourceNotFoundException("Termin ne obstaja z id: " + termin.getId()));
+
+        Collection<Termin> obstojeciTermini = iskanKandidat.getTermini();
+        if (obstojeciTermini.contains(obstojecTermin)){
+            obstojecTermin.setKandidat(null);
+            obstojeciTermini.remove(obstojecTermin);
+            iskanKandidat.setTermini(obstojeciTermini);
+            terminDao.save(obstojecTermin);
+        }
+
+        return kandidatDao.save(iskanKandidat);
+    }
+
+    // Spremeni Kandidat lastnosti - Upravljanje profila
+    @PutMapping("/{kandidat_id}")
+    public Kandidat spremeniKandidata(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Kandidat kandidat){
+        Kandidat posodobljenKandidat = kandidatDao.findById(kandidat_id).orElseThrow(() -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
+
+        posodobljenKandidat.setIme(kandidat.getIme());
+        posodobljenKandidat.setPriimek(kandidat.getPriimek());
+        posodobljenKandidat.setNaslov(kandidat.getNaslov());
+        posodobljenKandidat.setE_naslov(kandidat.getE_naslov());
+        posodobljenKandidat.setTelefonska_st(kandidat.getTelefonska_st());
+
+        return kandidatDao.save(posodobljenKandidat);
     }
 
     // Izbrisi Kandidata po Id
