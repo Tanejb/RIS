@@ -63,7 +63,7 @@ public class InstruktorController {
         return instruktorDao.save(iskanInstruktor);
     }
 
-    // Spreminjanje Instruktorja
+    // Spremeni Instruktorja lastnosti - Upravljanje profila
     @PutMapping("/spremeniInstruktorja/{instruktor_id}")
     public Instruktor spremeniInstruktorja(@PathVariable(name = "instruktor_id")Long instruktor_id, @RequestBody Instruktor instruktor){
         Instruktor posodobljenInstruktor = instruktorDao.findById(instruktor_id).orElseThrow(() -> new ResourceNotFoundException("Instruktor ne obstja z id: " + instruktor_id));
