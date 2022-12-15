@@ -83,7 +83,7 @@ public class KandidatController {
         return kandidatDao.save(iskanKandidat);
     }
 
-    // Odstrani Termin Kandidatu
+    // Odstrani Termin Kandidatu - Odjava z termina
     @PostMapping("/odstraniTermin/{kandidat_id}")
     public Kandidat odstraniTermin(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Termin termin){
         Kandidat iskanKandidat = kandidatDao.findById(kandidat_id).orElseThrow(()  -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
