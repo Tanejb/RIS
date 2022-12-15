@@ -70,7 +70,7 @@ public class KandidatController {
         return kandidatDao.save(posodobljenKandidat);
     }
 
-    // Dodaj Termin Kandidatu
+    // Dodaj Termin Kandidatu - Prijava na termin
     // Kandidata samo poiscec
     @PostMapping("/dodajTermin/{kandidat_id}")
     public Kandidat dodajTerminInstrukturju(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Termin termin){
