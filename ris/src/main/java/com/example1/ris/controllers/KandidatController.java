@@ -1,19 +1,18 @@
 package com.example1.ris.controllers;
 
 import com.example1.ris.EmailSenderService;
+import com.example1.ris.dao.AvtosolaRepository;
 import com.example1.ris.dao.KandidatRepository;
 import com.example1.ris.dao.TerminRepository;
 import com.example1.ris.exceprion.ResourceNotFoundException;
-import com.example1.ris.models.Instruktor;
-import com.example1.ris.models.Kandidat;
-import com.example1.ris.models.Kraj;
-import com.example1.ris.models.Termin;
+import com.example1.ris.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/kandidati")
 public class KandidatController {
@@ -26,6 +25,9 @@ public class KandidatController {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private AvtosolaRepository avtosolaDao;
 
     @GetMapping
     public Iterable<Kandidat> vrniKandidate(){
@@ -50,13 +52,14 @@ public class KandidatController {
     }
 
     @PostMapping
-    public Kandidat dodajKandidata(@RequestBody Kandidat kandidat){
+    public Long dodajKandidata(@RequestBody Kandidat kandidat){
         String welcome = "Welcome, " + kandidat.getIme();
         String body = "Thank you for registering on MojInstruktor app!";
         String userEmail = kandidat.getE_naslov();
         String attachment = "/Users/mihaprah/Desktop/RIS_repo/driveSafePhoto.jpg";
-        emailSenderService.sendEmail(userEmail, welcome, body, attachment);
-        return kandidatDao.save(kandidat);
+        //emailSenderService.sendEmail(userEmail, welcome, body, attachment);
+        kandidatDao.save(kandidat);
+        return kandidat.getId();
     }
 
     // Dodaj Kraj Kandidatu
@@ -101,6 +104,19 @@ public class KandidatController {
         return kandidatDao.save(iskanKandidat);
     }
 
+    // Dodaj Avtosolo Kandidatu
+    @PostMapping("/dodajAvtosolo/{kandidat_id}")
+    public Kandidat dodajAvtosolo(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Avtosola avtosola){
+        Kandidat iskanKandidat = kandidatDao.findById(kandidat_id).orElseThrow(() -> new ResourceNotFoundException("Kandidat ne obstaja z id: " + kandidat_id));
+        iskanKandidat.setAvtosola(avtosola);
+
+        Avtosola dodanaAvtosola = avtosolaDao.findById(avtosola.getId()).orElseThrow(() -> new ResourceNotFoundException("Avtosola ne obstaja z id: " + avtosola.getId()));
+        dodanaAvtosola.getKandidati().add(iskanKandidat);
+        avtosolaDao.save(dodanaAvtosola);
+
+        return kandidatDao.save(iskanKandidat);
+    }
+
     // Spremeni Kandidat lastnosti - Upravljanje profila
     @PutMapping("/{kandidat_id}")
     public Kandidat spremeniKandidata(@PathVariable(name = "kandidat_id")Long kandidat_id, @RequestBody Kandidat kandidat){
@@ -117,7 +133,8 @@ public class KandidatController {
 
     // Izbrisi Kandidata po Id
     @DeleteMapping("/izbrisiKandidata/{kandidat_id}")
-    public void izbrisiKandidata(@PathVariable(name = "kandidat_id")Long kandidat_id){
+    public String izbrisiKandidata(@PathVariable(name = "kandidat_id")Long kandidat_id){
         kandidatDao.deleteById(kandidat_id);
+        return "Succesfully deleted user with id: " + kandidat_id;
     }
 }
