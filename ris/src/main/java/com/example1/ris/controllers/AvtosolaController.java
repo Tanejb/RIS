@@ -42,8 +42,10 @@ public class AvtosolaController {
     }
 
     @PostMapping
-    public Avtosola dodajAvtosolo(@RequestBody Avtosola avtosola){
-        return avtosolaDao.save(avtosola);
+    public Long dodajAvtosolo(@RequestBody Avtosola avtosola){
+        avtosolaDao.save(avtosola);
+
+        return avtosola.getId();
     }
 
     // Dodaj Kraj Avtosoli
@@ -69,7 +71,16 @@ public class AvtosolaController {
         posodobljenaAvtosola.setNaslov(avtosola.getNaslov());
         posodobljenaAvtosola.setTelefonska_st(avtosola.getTelefonska_st());
         posodobljenaAvtosola.setKandidati(avtosola.getKandidati());
+        posodobljenaAvtosola.setE_naslov(avtosola.getE_naslov());
+        posodobljenaAvtosola.setGeslo(avtosola.getGeslo());
 
         return avtosolaDao.save(posodobljenaAvtosola);
+    }
+
+    // Izbrisi instruktorja
+    @DeleteMapping("/izbrisiAvtosolo/{avtosola_id}")
+    public String izbrisiAvtosolo(@PathVariable(name = "avtosola_id")Long avtosola_id){
+        avtosolaDao.deleteById(avtosola_id);
+        return "Succesfully deleted user with id: " + avtosola_id;
     }
 }
