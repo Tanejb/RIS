@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/instruktorji")
 public class InstruktorController {
@@ -34,8 +35,9 @@ public class InstruktorController {
     }
 
     @PostMapping
-    public Instruktor dodajInstruktorja(@RequestBody Instruktor instruktor){
-        return instruktorDao.save(instruktor);
+    public Long dodajInstruktorja(@RequestBody Instruktor instruktor){
+        instruktorDao.save(instruktor);
+        return instruktor.getId();
     }
 
     // Dodaj Avtošolo Instrukturju
@@ -79,7 +81,8 @@ public class InstruktorController {
 
     // Izbrisi instruktorja
     @DeleteMapping("/izbrisiInstruktorja/{instruktor_id}")
-    public void izbrisiInstruktorja(@PathVariable(name = "instruktor_id")Long instruktor_id){
+    public String izbrisiInstruktorja(@PathVariable(name = "instruktor_id")Long instruktor_id){
         instruktorDao.deleteById(instruktor_id);
+        return "Succesfully deleted user with id: " + instruktor_id;
     }
 }

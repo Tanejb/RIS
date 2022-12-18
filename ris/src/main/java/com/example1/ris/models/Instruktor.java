@@ -20,8 +20,7 @@ public class Instruktor {
 	private String telefonska_st;
 	private String e_naslov;
 	private double cena_voznje;
-	private String user_name;
-	private String password;
+	private String geslo;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "avtosola_id")
@@ -124,5 +123,13 @@ public class Instruktor {
 
 	public void setTermini(Collection<Termin> termini) {
 		this.termini = termini;
+	}
+
+	public String getGeslo() {
+		return geslo;
+	}
+
+	public void setGeslo(String geslo) {
+		this.geslo = geslo;
 	}
 }
