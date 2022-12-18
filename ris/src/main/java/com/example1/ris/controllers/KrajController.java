@@ -32,7 +32,7 @@ public class KrajController {
         return krajDao.vrniKrajePoDrzaviInPostniStevilki(imeDrzave, postnaSt, imeKraja);
     }
 
-    @PostMapping
+    @PostMapping 
     public Kraj dodajKraj(@RequestBody Kraj kraj){
         return krajDao.save(kraj);
     }
