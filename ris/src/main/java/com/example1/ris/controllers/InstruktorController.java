@@ -75,6 +75,7 @@ public class InstruktorController {
         posodobljenInstruktor.setTelefonska_st(instruktor.getTelefonska_st());
         posodobljenInstruktor.setE_naslov(instruktor.getE_naslov());
         posodobljenInstruktor.setCena_voznje(instruktor.getCena_voznje());
+        posodobljenInstruktor.setGeslo(instruktor.getGeslo());
 
         return instruktorDao.save(posodobljenInstruktor);
     }
