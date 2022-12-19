@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("/kraji")
 public class KrajController {
 
-    @Autowired
+    @Autowired 
     private KrajRepository krajDao;
 
     @GetMapping
