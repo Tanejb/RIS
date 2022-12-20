@@ -2,10 +2,12 @@ package com.example1.ris.controllers;
 
 import com.example1.ris.dao.AvtosolaRepository;
 import com.example1.ris.dao.InstruktorRepository;
+import com.example1.ris.dao.Ocena_InstruktorjaRepository;
 import com.example1.ris.dao.TerminRepository;
 import com.example1.ris.exceprion.ResourceNotFoundException;
 import com.example1.ris.models.Avtosola;
 import com.example1.ris.models.Instruktor;
+import com.example1.ris.models.Ocena_instruktorja;
 import com.example1.ris.models.Termin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ public class InstruktorController {
 
     @Autowired
     private TerminRepository terminDao;
+    @Autowired
+    private Ocena_InstruktorjaRepository ocenaInstruktorjaDao;
 
     @GetMapping
     public Iterable<Instruktor> vrniInstruktorje(){return instruktorDao.findAll();}
@@ -32,6 +36,11 @@ public class InstruktorController {
     @GetMapping("/{instruktor_id}")
     public Optional<Instruktor> vrniInstruktorjaPoId(@PathVariable(name = "instruktor_id")Long instruktor_id){
         return instruktorDao.findById(instruktor_id);
+    }
+    //Pridobima instruktorja iz avtosole X, ki ima ocene vecjo od Y
+    @GetMapping("/ocenaVecja/{imeAvtosole}/{ocena}")
+    public Iterable<Instruktor> vrniInstruktorjaPoOceni(@PathVariable(name = "imeAvtosole")String imeAvtosole,@PathVariable(name = "ocena")int ocena){
+        return  instruktorDao.instruktorjiIzAvtosoleZOceno(imeAvtosole, ocena);
     }
 
     @PostMapping
@@ -62,6 +71,16 @@ public class InstruktorController {
         dodanTermin.setInstruktor(iskanInstruktor);
         terminDao.save(dodanTermin);
 
+        return instruktorDao.save(iskanInstruktor);
+    }
+    // Dodaj oceno instruktorju
+    @PostMapping("/dodajOceno/{instruktor_id}")
+    public Instruktor dodajOcenoInstruktorju(@PathVariable(name = "instruktor_id")Long instruktor_id, @RequestBody Ocena_instruktorja ocenaInstruktorja) {
+        Instruktor iskanInstruktor = instruktorDao.findById(instruktor_id).orElseThrow(()  -> new ResourceNotFoundException("Instruktor ne obstaja z id: " + instruktor_id));
+        iskanInstruktor.setOcena(ocenaInstruktorja);
+        Ocena_instruktorja podanaOcena = ocenaInstruktorjaDao.findById(ocenaInstruktorja.getId()).orElseThrow(()-> new ResourceNotFoundException("Ocena ne obstaja z id: " + ocenaInstruktorja.getId()));
+        podanaOcena.setInstruktor(iskanInstruktor);
+        ocenaInstruktorjaDao.save(podanaOcena);
         return instruktorDao.save(iskanInstruktor);
     }
 

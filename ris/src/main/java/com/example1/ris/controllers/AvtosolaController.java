@@ -1,32 +1,53 @@
 package com.example1.ris.controllers;
 
+import com.example1.ris.PDFGeneratorService;
 import com.example1.ris.dao.AvtosolaRepository;
 import com.example1.ris.exceprion.ResourceNotFoundException;
 import com.example1.ris.models.Avtosola;
-import com.example1.ris.models.Kandidat;
 import com.example1.ris.models.Kraj;
-import com.example1.ris.models.Nakup;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/avtosole")
 public class AvtosolaController {
+    private  final PDFGeneratorService pdfGeneratorService;
 
     @Autowired
     private AvtosolaRepository avtosolaDao;
+
+    public AvtosolaController(PDFGeneratorService pdfGeneratorService) {
+        this.pdfGeneratorService = pdfGeneratorService;
+    }
 
     @GetMapping
     public Iterable<Avtosola> vrniAvtosole(){
         return avtosolaDao.findAll();
     }
+    @GetMapping("/pdf/generiraj")
+    public void generatePDF(HttpServletResponse response) throws IOException, URISyntaxException {
+        response.setContentType("aplikacija/pdf");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
 
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=pdf_" + currentDateTime + " .pdf";
+        response.setHeader(headerKey, headerValue);
+        this.pdfGeneratorService.export(response);
+    }
     @GetMapping("/{avtosola_id}")
-    public Optional<Avtosola> vrniAvtosoloPoId(@PathVariable(name = "avtosola_id") Long avtosola_id){
-        return avtosolaDao.findById(avtosola_id);
+    public Avtosola vrniAvtosoloPoId(@PathVariable(name = "avtosola_id") Long avtosola_id){
+        Avtosola iskanaAvtosola = avtosolaDao.findById(avtosola_id).orElseThrow(() -> new ResourceNotFoundException("Avtosola ne obstaja z id: " + avtosola_id));
+
+        return iskanaAvtosola;
     }
 
     // Pridobi Avtošole kjer je ime podobno kot (imeAvtosole) in ime kraja avtošole je (imeKraj)
