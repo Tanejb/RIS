@@ -50,6 +50,11 @@ public class KandidatController {
     public Iterable<Kandidat> vrniKandidataIzKraja(@PathVariable(name = "imeKraja")String imeKraja){
         return kandidatDao.vrniKandidatePoKraju(imeKraja);
     }
+    //Pridobi kandidata, ki je v avtosoli(Avtosola) in kraju(Kraj)
+    @GetMapping("/pridobiPoAvtosoliKraju/{imeAvtosole}/{imeKraja}")
+    public Iterable<Kandidat> pridobiPoAvtosoliKraju (@PathVariable(name = "imeAvtosole")String imeAvtosole,@PathVariable(name = "imeKraja")String imeKraja) {
+        return kandidatDao.vrniKandidateIzAvtosoleIzKraja(imeAvtosole,imeKraja);
+    }
 
     @PostMapping
     public Long dodajKandidata(@RequestBody Kandidat kandidat){

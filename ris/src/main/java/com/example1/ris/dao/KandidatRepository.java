@@ -13,4 +13,8 @@ public interface KandidatRepository extends CrudRepository<Kandidat, Long> {
     // Pridobi Kandidate katerih Kraj je enak (imeKraja)
     @Query("select k from Kandidat k where k.kraj in (select k.id from Kraj k where k.ime like ?1%)")
     Iterable<Kandidat> vrniKandidatePoKraju(String imeKraja);
+
+    //Pridobi kandidata, ki je v avtosoli(Avtosola) in kraju(Kraj)
+    @Query("select k from Kandidat k where k.avtosola in (select a.id from Avtosola a where a.ime like ?1%) and k.kraj in (select kr.id from Kraj kr where kr.ime like ?2%)")
+    Iterable<Kandidat> vrniKandidateIzAvtosoleIzKraja(String imeAvtosole, String imeKraja);
 }
