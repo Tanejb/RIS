@@ -26,7 +26,7 @@ public class KandidatController {
     @Autowired
     private EmailSenderService emailSenderService;
 
-    @Autowired
+    @Autowired 
     private AvtosolaRepository avtosolaDao;
 
     @GetMapping
